@@ -1,25 +1,24 @@
-// // TODO: Define a City class with name and id properties
+// TODO: Define a City class with name and id properties
 
-// // TODO: Complete the HistoryService class
-// class HistoryService {
-//   // TODO: Define a read method that reads from the searchHistory.json file
-//   // private async read() {}
-//   // TODO: Define a write method that writes the updated cities array to the searchHistory.json file
-//   // private async write(cities: City[]) {}
-//   // TODO: Define a getCities method that reads the cities from the searchHistory.json file and returns them as an array of City objects
-//   // async getCities() {}
-//   // TODO Define an addCity method that adds a city to the searchHistory.json file
-//   // async addCity(city: string) {}
-//   // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file
-//   // async removeCity(id: string) {}
-// }
+// TODO: Complete the HistoryService class
+  // TODO: Define a read method that reads from the searchHistory.json file
+  // private async read() {}
+  // TODO: Define a write method that writes the updated cities array to the searchHistory.json file
+  // private async write(cities: City[]) {}
+  // TODO: Define a getCities method that reads the cities from the searchHistory.json file and returns them as an array of City objects
+  // async getCities() {}
+  // TODO Define an addCity method that adds a city to the searchHistory.json file
+  // async addCity(city: string) {}
+  // * BONUS TODO: Define a removeCity method that removes a city from the searchHistory.json file
+  // async removeCity(id: string) {}
+
 
 // export default new HistoryService();
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+import fs from 'fs/promises';
 class City {
   name: string;
   id: number;
@@ -29,27 +28,25 @@ class City {
     this.id = id;
   }
 }
-import fs from 'fs/promises';
-
-class HistoryService {
-  private filePath: string;
-
-  constructor() {
-    this.filePath = path.join(__dirname, 'searchHistory.json');
-  }
-
-  async read() {
-    try {
-      const data = await fs.readFile(this.filePath, 'utf-8');
-      return JSON.parse(data);
-    } catch (err) {
-      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
-        return []; // If the file doesn't exist, return an empty array
-      } else {
-        throw err;
-      }
+   class HistoryService {
+    private async read() {
+      return await fs.readFile('searchHistory.json', {
+        flag: 'a+',
+        encoding: 'utf8',
+      });
     }
-  }
+  // async read() {
+  //   try {
+  //     const data = await fs.readFile(this.filePath, 'utf-8');
+  //     return JSON.parse(data);
+  //   } catch (err) {
+  //     if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+  //       return []; // If the file doesn't exist, return an empty array
+  //     } else {
+  //       throw err;
+  //     }
+  //   }
+  // }
 
   async write(cities: City[]) {
     const data = JSON.stringify(cities, null, 2);

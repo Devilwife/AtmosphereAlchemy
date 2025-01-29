@@ -14,10 +14,6 @@
 
 
 // export default new HistoryService();
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 import fs from 'fs/promises';
 class City {
   name: string;
@@ -29,11 +25,17 @@ class City {
   }
 }
    class HistoryService {
+    private filePath: string;
+
+    constructor() {
+      this.filePath = 'searchHistory.json';
+    }
     private async read() {
-      return await fs.readFile('searchHistory.json', {
+      const data = await fs.readFile('searchHistory.json', {
         flag: 'a+',
         encoding: 'utf8',
       });
+      return data ? JSON.parse(data) : [];
     }
   // async read() {
   //   try {

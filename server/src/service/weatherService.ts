@@ -29,16 +29,48 @@
 
 
 // export default new WeatherService();
+interface Coordinates {
+  name: string;
+  lat: number;
+  lon: number;
+  country: string;
+  state: string;
+}
 
+// TODO: Define a class for the Weather object
+class Weather {
+  city: string;
+  date: Dayjs | string;
+  tempF: number;
+  windSpeed: number;
+  humidity: number;
+  icon: string;
+  iconDescription: string;
+  constructor(
+    city: string,
+    date: Dayjs | string,
+    tempF: number,
+    windSpeed: number,
+    humidity: number,
+    icon: string,
+    iconDescription: string
+  ) {
+    this.city = city;
+    this.date = date;
+    this.tempF = tempF;
+    this.windSpeed = windSpeed;
+    this.humidity = humidity;
+    this.icon = icon;
+    this.iconDescription = iconDescription;
+  }
+}
 interface Coordinates {
   lat: number;
   lon: number;
 }
-class Weather {
-  constructor(public temperature: number, public description: string, public icon: string) {}
-}
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+import { Dayjs } from 'dayjs';
 dotenv.config();
 
 class WeatherService {
@@ -58,8 +90,8 @@ class WeatherService {
   }
 
   private destructureLocationData(locationData: any): Coordinates {
-    const { lat, lon } = locationData[0];
-    return { lat, lon };
+    const { name, lat, lon, country, state } = locationData[0];
+    return { name, lat, lon, country, state };
   }
 
   private buildGeocodeQuery(query: string): string {
@@ -82,7 +114,15 @@ class WeatherService {
 
   private parseCurrentWeather(response: any): Weather {
     const { main, weather } = response;
-    return new Weather(main.temp, weather[0].description, weather[0].icon);
+    return new Weather(
+      this.cityName,
+      new Date().toISOString(),
+      main.temp,
+      response.wind.speed,
+      main.humidity,
+      weather[0].icon,
+      weather[0].description
+    );
   }
 
 

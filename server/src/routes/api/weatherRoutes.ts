@@ -1,17 +1,16 @@
 import { Router, type Request, type Response } from 'express';
 
-const router: Router = Router();
+const router = Router();
 
 
 
 // Import services
-import HistoryService from '../../service/historyService.js';
-import WeatherService from '../../service/weatherService.js';
+import HistoryService from '../../service/historyService';
+import WeatherService from '../../service/weatherService';
 
 // POST: Retrieve weather data for a city and save it to search history
 router.post('/weather', async (req: Request, res: Response) => {
-   
-  // Extract city name from request body
+   // Extract city name from request body
   const { city } = req.body;
 
   // Validate that a city is provided
